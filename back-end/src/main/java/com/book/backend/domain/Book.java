@@ -18,7 +18,7 @@ public class Book {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @Column(name = "book_name")
+    @Column(name = "book_name", unique = true)
     private String name;
 
     private int stockQuantity;
