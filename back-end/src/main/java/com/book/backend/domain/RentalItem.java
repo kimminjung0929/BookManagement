@@ -21,4 +21,5 @@ public class RentalItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book;
+
 }

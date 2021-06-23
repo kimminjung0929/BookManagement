@@ -20,9 +20,9 @@ public class Rental {
     private Member member;
 
     @Enumerated(EnumType.STRING)
-    private RentalStatus status;
+    private RentalStatus status; // 대여 상태 [RENTAL, RETURN]
 
-    private LocalDateTime rentalDate;
+    private LocalDateTime rentalDate; // 대여 시간
 
-    private LocalDateTime returnDate;
+    private LocalDateTime returnDate; // 반납 시간
 }
