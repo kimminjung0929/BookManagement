@@ -1,8 +1,6 @@
 package com.book.backend.controller;
 
-import com.book.backend.domain.Book;
-import com.book.backend.domain.Category;
-import com.book.backend.domain.RequestAddBook;
+import com.book.backend.domain.BookDTO;
 import com.book.backend.service.BookService;
 import com.book.backend.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/book")
@@ -35,14 +32,20 @@ public class BookController {
     }
 
     // 도서 조회
+    @GetMapping(value = "")
+    public ResponseEntity<List<BookDTO>> getBookList() {
+        List<BookDTO> bookDTO = bookService.bookList();
+
+        return new ResponseEntity<>(bookDTO, HttpStatus.OK);
+    }
 
     // 도서 등록 하기
     @PostMapping(value = "")
-    public ResponseEntity<String> addBook(@RequestBody RequestAddBook requestAddBook) {
+    public ResponseEntity<String> addBook(@RequestBody BookDTO bookDTO) {
 
         // 도서 등록하기
 
-        String msg = bookService.addBook(requestAddBook);
+        String msg = bookService.addBook(bookDTO);
 
 
         return new ResponseEntity<>(msg, HttpStatus.OK);

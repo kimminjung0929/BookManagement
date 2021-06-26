@@ -1,13 +1,14 @@
 package com.book.backend.service;
 
 import com.book.backend.domain.Book;
+import com.book.backend.domain.BookDTO;
 import com.book.backend.domain.Category;
-import com.book.backend.domain.RequestAddBook;
 import com.book.backend.repository.BookRepository;
 import com.book.backend.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,24 +25,24 @@ public class BookService {
     }
     
     // 도서 등록
-    public String addBook(RequestAddBook addBook) {
+    public String addBook(BookDTO addBook) {
 
         String msg = null;
 
         // 도서 분류 목록확인
-        Optional<Category> category_result = categoryRepository.findByName(addBook.getCategory_name());
+        Optional<Category> category_result = categoryRepository.findByName(addBook.getCategoryName());
         if (category_result.isEmpty()) { // 분류 목록 없을 때
             msg = "도서 분류 정보가 잘못 됬습니다.";
         }else { // 분류 목록 있을 때
             Book book = new Book();
 
             // 도서 검색
-            Optional<Book> findBook = bookRepository.findByName(addBook.getBook_name());
+            Optional<Book> findBook = bookRepository.findByName(addBook.getName());
 
             if (findBook.isEmpty()) { // 같은 도서 없으면 새 도서 등록
                 book.setStockQuantity(addBook.getStockQuantity());
 
-                book.setName(addBook.getBook_name());
+                book.setName(addBook.getName());
                 book.setAuthor(addBook.getAuthor());
 
                 Long category_id = category_result.get().getId();
@@ -55,7 +56,7 @@ public class BookService {
                 book.setStockQuantity(addBook.getStockQuantity() + findBook.get().getStockQuantity());
 
                 book.setId(findBook.get().getId());
-                book.setName(addBook.getBook_name());
+                book.setName(addBook.getName());
                 book.setAuthor(addBook.getAuthor());
 
                 Long category_id = category_result.get().getId();
@@ -75,6 +76,27 @@ public class BookService {
 
     // 도서 재고 수량 증가
     public void addStockQuantity(String book_name, int stockQuantity) {
+
+    }
+
+    // 도서 조회
+    public List<BookDTO> bookList() {
+        List<BookDTO> bookDTOs = new ArrayList<>();
+
+        List<Book> books = bookRepository.findAll();
+
+        for (Book b : books) {
+            BookDTO bookDTO = new BookDTO();
+            bookDTO.setId(b.getId());
+            bookDTO.setName(b.getName());
+            bookDTO.setCategoryName(b.getCategory().getName());
+            bookDTO.setAuthor(b.getAuthor());
+            bookDTO.setStockQuantity(b.getStockQuantity());
+
+            bookDTOs.add(bookDTO);
+        }
+
+        return bookDTOs;
 
     }
 

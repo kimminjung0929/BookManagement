@@ -14,7 +14,7 @@ public class Book {
     @Column(name = "book_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
