@@ -1,6 +1,6 @@
 package com.book.backend.controller;
 
-import com.book.backend.domain.Member;
+import com.book.backend.domain.MemberDTO;
 import com.book.backend.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,28 +23,16 @@ public class MemberController {
 
 
     @PostMapping(value = "")
-    public ResponseEntity<String> register(@RequestBody Member member) {
-        String msg;
-
-        Optional<Member> member_id = memberService.validateMember(member);
-
-        if (member_id.isEmpty()) {
-            memberService.saveMember(member);
-            msg = "가입성공";
-        } else {
-            msg = "아이디가 중복 됩니다";
-        }
-
-
-
+    public ResponseEntity<String> register(@RequestBody MemberDTO memberDto) {
+        String msg = memberService.registerMember(memberDto);
 
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
     @GetMapping(value = "")
-    public ResponseEntity<List<Member>> getMembers() {
-        List<Member> members = memberService.findAll();
+    public ResponseEntity<List<MemberDTO>> getMembers() {
+        List<MemberDTO> memberList = memberService.findAll();
 
-        return new ResponseEntity<>(members, HttpStatus.OK);
+        return new ResponseEntity<>(memberList, HttpStatus.OK);
     }
 }
