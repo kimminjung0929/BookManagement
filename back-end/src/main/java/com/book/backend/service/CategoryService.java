@@ -19,20 +19,29 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<String> getCategoryList() {
-        List<Category> results = categoryRepository.findAll();
-        List<String> category_names = new ArrayList<>();
 
-        for (Category category : results) {
-            category_names.add(category.getName());
-        }
+    /**
+     * 
+     * 카테고리 리스트 조회
+     */
+    public List<String> getCategoryList() {
+//        List<Category> results = categoryRepository.findAll();
+        List<String> category_names = categoryRepository.findAll();
+
+//        for (Category category : results) {
+//            category_names.add(category.getName());
+//        }
 
         return category_names;
     }
 
-    public Optional<Category> getCategoryId(String category_name) {
-        Optional<Category> category = categoryRepository.findByName(category_name);
-
-        return category;
-    }
+    /**
+     * 
+     * 카테고리 ID로 이름 조회
+     */
+//    public Optional<Category> getCategoryId(String category_name) {
+//        Optional<Category> category = categoryRepository.findByName(category_name);
+//
+//        return category;
+//    }
 }

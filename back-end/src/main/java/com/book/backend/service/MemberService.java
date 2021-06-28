@@ -5,12 +5,14 @@ import com.book.backend.domain.MemberDTO;
 import com.book.backend.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true) // 스프링 제공하는 트렌잭션사용
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -20,16 +22,18 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
+
     /**
      * 회원가입
      */
+    @Transactional
     public String registerMember(MemberDTO memberDTO) {
 
         String msg;
 
-        Optional<Member> member_id = validateMember(memberDTO);;
+        Member member_id = validateMember(memberDTO);;
 
-        if (member_id.isEmpty()) {
+        if (member_id == null) {
             Member member = new Member();
             member.setId(memberDTO.getId());
             member.setName(memberDTO.getName());
@@ -48,8 +52,8 @@ public class MemberService {
     /**
      * ID 중복 체크
      */
-    public Optional<Member> validateMember(MemberDTO memberDTO) {
-        Optional<Member> member_id = memberRepository.findById(memberDTO.getId());
+    public Member validateMember(MemberDTO memberDTO) {
+        Member member_id = memberRepository.findById(memberDTO.getId());
 
         return  member_id;
     }
@@ -72,6 +76,15 @@ public class MemberService {
         }
 
         return memberDTOList;
+    }
+
+    /**
+     * 전체 회원 ID 조회
+     */
+    public List<String> findId() {
+        List<String> memberId = memberRepository.findId();
+
+        return memberId;
     }
 
 }
