@@ -2,6 +2,7 @@ package com.book.backend.controller;
 
 import com.book.backend.domain.BookDTO;
 import com.book.backend.domain.MemberDTO;
+import com.book.backend.domain.RentalRequest;
 import com.book.backend.service.BookService;
 import com.book.backend.service.MemberService;
 import com.book.backend.service.RentalService;
@@ -43,6 +44,26 @@ public class RentalController {
         map.put("bookName", bookNameList);
 
         return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    /**
+     * 대여 내역 조회
+     */
+    @GetMapping(value = "")
+    public void getRentalList() {
+        rentalService.getRental();
+    }
+
+    /**
+     * 대여 하기
+     */
+    @PostMapping(value = "")
+    public ResponseEntity<String> addRental(@RequestBody RentalRequest rentalRequest) {
+        System.out.println("rentalRequest = " + rentalRequest.getBookName());
+        String msg = rentalService.rental(rentalRequest);
+
+
+        return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
 }

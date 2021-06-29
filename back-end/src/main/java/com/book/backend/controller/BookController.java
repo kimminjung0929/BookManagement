@@ -33,25 +33,14 @@ public class BookController {
     }
 
     // 도서 조회
-//    @GetMapping(value = "")
-//    public ResponseEntity<List<BookDTO>> getBookList() {
-////        List<BookDTO> bookDTO = bookService.bookList();
-//
-////        return new ResponseEntity<>(bookDTO, HttpStatus.OK);
-//    }
-
     @GetMapping(value = "")
     public ResponseEntity<List<BookDTO>> getBookList(@RequestParam(value = "category", required = false, defaultValue = "all") String category) {
         BookSearch bookSearch = new BookSearch();
         bookSearch.setCategoryName(category);
 
-        bookService.bookList(bookSearch);
-
         List<BookDTO> bookList = bookService.bookList(bookSearch);
 
-
         return new ResponseEntity<>(bookList, HttpStatus.OK);
-
     }
 
 

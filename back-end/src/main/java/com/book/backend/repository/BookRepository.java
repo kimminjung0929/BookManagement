@@ -34,6 +34,7 @@ public class BookRepository {
         } else {
             em.merge(book);
         }
+
     }
 
     /**
@@ -51,7 +52,7 @@ public class BookRepository {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Book> cq = cb.createQuery(Book.class);
         Root<Book> o = cq.from(Book.class);
-        Join<Object, Object> m = o.join("category", JoinType.INNER);
+        Join<Object, Object> c = o.join("category", JoinType.INNER);
 
         List<Predicate> criteria = new ArrayList<>();
 

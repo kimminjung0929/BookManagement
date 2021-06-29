@@ -4,9 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class RentalRequest {
-
-    private String memberName;
+public class RentalSearch {
 
     private String bookName;
+
+    private String rentalStatus;
 }

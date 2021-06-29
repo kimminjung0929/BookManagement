@@ -38,9 +38,10 @@ public class Book {
     public String removeStock(int quantity) {
         String msg = null;
         if (this.stockQuantity == 0) {
-            msg = "재고가 없습니다.";
+            msg = "재고 없음";
         } else {
             this.stockQuantity -= quantity;
+            msg = "재고 있음";
         }
 
         return msg;
