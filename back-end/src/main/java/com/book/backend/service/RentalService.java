@@ -6,6 +6,7 @@ import com.book.backend.repository.MemberRepository;
 import com.book.backend.repository.RentalItemRepository;
 import com.book.backend.repository.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,10 +29,6 @@ public class RentalService {
         this.rentalItemRepository = rentalItemRepository;
     }
 
-    public void getRental() {
-        rentalRepository.getRentalList();
-    }
-
     /**
      * 대여 하기
      */
@@ -48,7 +45,7 @@ public class RentalService {
 
         if (!msg.equals("재고 없음")) {
             // 엔티티 조회
-            Member member = memberRepository.findByName(rentalRequest.getMemberName()).get(0);
+            Member member = memberRepository.findById(rentalRequest.getMemberId());
             // 대여 생성 & 저장
             Rental rental = new Rental();
             rental.setMember(member);
@@ -69,5 +66,23 @@ public class RentalService {
 
         return msg;
     }
+
+    /**
+     * 반납하기
+     */
+    @Transactional
+    public void returnBook(Long rentalId) {
+
+        Rental rental = rentalRepository.findById(rentalId);
+        Book book = rentalItemRepository.findByRental(rental).get(0).getBook();
+
+        // 대여 상태, 반납 시간, 도서 재고 수량 + 1
+        rental.setStatus(RentalStatus.RETURN);
+        rental.setReturnDate(LocalDateTime.now());
+        book.addStock(1);
+
+
+    }
+
 
 }

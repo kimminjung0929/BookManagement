@@ -1,10 +1,9 @@
 package com.book.backend.controller;
 
-import com.book.backend.domain.BookDTO;
-import com.book.backend.domain.MemberDTO;
-import com.book.backend.domain.RentalRequest;
+import com.book.backend.domain.*;
 import com.book.backend.service.BookService;
 import com.book.backend.service.MemberService;
+import com.book.backend.service.RentalItemService;
 import com.book.backend.service.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/rental")
@@ -22,12 +20,14 @@ public class RentalController {
     private final RentalService rentalService;
     private final BookService bookService;
     private final MemberService memberService;
+    private final RentalItemService rentalItemService;
 
     @Autowired
-    public RentalController(RentalService rentalService, BookService bookService, MemberService memberService) {
+    public RentalController(RentalService rentalService, BookService bookService, MemberService memberService, RentalItemService rentalItemService) {
         this.rentalService = rentalService;
         this.bookService = bookService;
         this.memberService = memberService;
+        this.rentalItemService = rentalItemService;
     }
 
     /**
@@ -50,8 +50,20 @@ public class RentalController {
      * 대여 내역 조회
      */
     @GetMapping(value = "")
-    public void getRentalList() {
-        rentalService.getRental();
+    public ResponseEntity<List<RentalResponse>> getRentalList(@RequestParam(value = "book", required = false, defaultValue = "") String bookName,
+                              @RequestParam(value = "status", required = false, defaultValue = "") String rentalStatus) {
+        
+        RentalSearch rentalSearch = new RentalSearch();
+        rentalSearch.setBookName(bookName);
+        if (rentalStatus.equals("rental")) {
+            rentalSearch.setStatus(RentalStatus.RENTAL);
+        } else if (rentalStatus.equals("return")) {
+            rentalSearch.setStatus(RentalStatus.RETURN);
+        }
+        
+        List<RentalResponse> rentalResponseList = rentalItemService.getRentalList(rentalSearch);
+
+        return new ResponseEntity<>(rentalResponseList, HttpStatus.OK);
     }
 
     /**
@@ -59,11 +71,20 @@ public class RentalController {
      */
     @PostMapping(value = "")
     public ResponseEntity<String> addRental(@RequestBody RentalRequest rentalRequest) {
-        System.out.println("rentalRequest = " + rentalRequest.getBookName());
+        System.out.println("rentalRequest = " + rentalRequest.getMemberId());
         String msg = rentalService.rental(rentalRequest);
 
 
         return new ResponseEntity<>(msg, HttpStatus.OK);
+    }
+
+    /**
+     * 반납하기
+     */
+    @PutMapping(value = "/{id}")
+    public void bookReturn(@PathVariable("id") Long rentalId) {
+
+        rentalService.returnBook(rentalId);
     }
 
 }

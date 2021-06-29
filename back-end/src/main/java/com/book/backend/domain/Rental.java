@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -25,4 +27,7 @@ public class Rental {
     private LocalDateTime rentalDate; // 대여 시간
 
     private LocalDateTime returnDate; // 반납 시간
+
+//    @OneToMany(mappedBy = "rental")
+//    private List<RentalItem> rentalItems = new ArrayList<>();
 }
