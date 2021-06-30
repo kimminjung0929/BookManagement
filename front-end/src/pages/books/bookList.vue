@@ -1,15 +1,11 @@
 <template>
   <div class="d-flex flex-column align-items-center mt-5" style="height: 700px ">
     <h3 class="mb-2">도서 목록</h3>
+    <br>
     <div style="width:80%" >
       <div class="d-flex justify-content-end">
-        <select class="form-select mx-3" style="width: 200px">
-          <option selected>목록</option>
-          <option value="1">전체</option>
-          <option value="2">기술과학</option>
-          <option value="3">언어</option>
-        </select>
-        <button type="button" class="btn btn-primary">검색</button>
+        <input type="text" class="form-control mx-2" v-model="search" placeholder="목록을 입력해주세요" style="width:200px" @keyup.up.enter="searchCategory">
+        <button type="button" class="btn btn-primary" @click.stop="searchCategory">검색</button>
       </div>
       <br>
       <div class="d-flex justify-content-center">
@@ -23,27 +19,49 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="text-center">1</td>
-              <td class="text-center">하악하악</td>
-              <td class="text-center" >4</td>
-              <td class="text-center" >기술과학</td>
+            <tr v-for="book in books" v-bind:key="book.id">
+              <td class="text-center">{{ book.id }}</td>
+              <td class="text-center">{{ book.name }}</td>
+              <td class="text-center">{{ book.stockQuantity }}</td>
+              <td class="text-center">{{ book.categoryName }}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
+    <div v-if="!books.length" style="color: red">도서가 없습니다</div>
   </div>
 </template>
 
 <script>
+import { ref } from 'vue';
+import axios from '@/axiosBaseURL.js';
+
 export default {
     setup() {
+      const books = ref([]);
+      const search = ref ('');
 
-        
-        return {
+      const getBook = async () => {
+        const res = await axios.get('/book');
+        books.value = res.data;
+      }
+      getBook();
 
+      const searchCategory = async () => {
+        if (search.value === '') {
+          getBook();
         }
+        const res = await axios.get(`book?category=${search.value}`);
+        books.value = res.data;
+      }
+        
+      return {
+        books,
+        search,
+        getBook,
+        searchCategory
+      }
 
     }
 }

@@ -1,6 +1,7 @@
 package com.book.backend.service;
 
 import com.book.backend.domain.Category;
+import com.book.backend.domain.CategoryDTO;
 import com.book.backend.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,9 +24,17 @@ public class CategoryService {
     /**
      * 카테고리 리스트 조회
      */
-    public List<String> getCategoryList() {
-        List<String> category_names = categoryRepository.findAll();
+    public List<CategoryDTO> getCategoryList() {
+        List<Category> categoryList = categoryRepository.findAll();
 
-        return category_names;
+        List<CategoryDTO> categoryDTOList = new ArrayList<>();
+        for (Category c : categoryList) {
+            CategoryDTO categoryDTO = new CategoryDTO();
+            categoryDTO.setId(c.getId());
+            categoryDTO.setName(c.getName());
+
+            categoryDTOList.add(categoryDTO);
+        }
+        return categoryDTOList;
     }
 }

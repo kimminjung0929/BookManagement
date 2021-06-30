@@ -18,8 +18,8 @@ public class CategoryRepository {
     /**
      * 전체 카테고리 조회 
      */
-    public List<String> findAll() {
-         List<String> results = em.createQuery("select c.name from Category c", String.class)
+    public List<Category> findAll() {
+         List<Category> results = em.createQuery("select c from Category c", Category.class)
                 .getResultList();
 
          return results;
