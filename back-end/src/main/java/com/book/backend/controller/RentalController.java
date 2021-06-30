@@ -71,7 +71,6 @@ public class RentalController {
      */
     @PostMapping(value = "")
     public ResponseEntity<String> addRental(@RequestBody RentalRequest rentalRequest) {
-        System.out.println("rentalRequest = " + rentalRequest.getMemberId());
         String msg = rentalService.rental(rentalRequest);
 
 
@@ -82,9 +81,11 @@ public class RentalController {
      * 반납하기
      */
     @PutMapping(value = "/{id}")
-    public void bookReturn(@PathVariable("id") Long rentalId) {
+    public ResponseEntity<String> bookReturn(@PathVariable("id") Long rentalId) {
 
         rentalService.returnBook(rentalId);
+
+        return new ResponseEntity<>("반납 완료", HttpStatus.OK);
     }
 
 }

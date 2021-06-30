@@ -36,8 +36,8 @@ public class RentalItemRepository {
             criteria.add(cat);
         }
 
-
         cq.where(cb.and(criteria.toArray(new Predicate[criteria.size()])));
+        cq.orderBy(cb.desc(o.get("id")));
         TypedQuery<RentalItem> query = em.createQuery(cq);
         return query.getResultList();
     }

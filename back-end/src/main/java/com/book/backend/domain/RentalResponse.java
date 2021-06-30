@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter @Setter
 public class RentalResponse {
@@ -14,7 +14,7 @@ public class RentalResponse {
     private String bookName;
     @Enumerated(EnumType.STRING)
     private RentalStatus rentalStatus;
-    private LocalDateTime rentalDate;
-    private LocalDateTime returnDate;
+    private LocalDate rentalDate;
+    private LocalDate returnDate;
 
 }

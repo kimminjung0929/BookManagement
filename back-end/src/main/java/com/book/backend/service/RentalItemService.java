@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,9 +50,10 @@ public class RentalItemService {
                 rentalResponse.setMemberId(i.getRental().getMember().getId());
                 rentalResponse.setRentalStatus(i.getRental().getStatus());
                 rentalResponse.setBookName(i.getBook().getName());
-                rentalResponse.setRentalDate(i.getRental().getRentalDate());
-                rentalResponse.setReturnDate(i.getRental().getReturnDate());
-
+                rentalResponse.setRentalDate(LocalDate.from(i.getRental().getRentalDate()));
+                if (i.getRental().getReturnDate() != null) {
+                    rentalResponse.setReturnDate(LocalDate.from(i.getRental().getReturnDate()));
+                }
                 rentalResponseList.add(rentalResponse);
             }
         } else { // 상태 검색 o
@@ -63,8 +66,10 @@ public class RentalItemService {
                 rentalResponse.setMemberId(i.getRental().getMember().getId());
                 rentalResponse.setRentalStatus(i.getRental().getStatus());
                 rentalResponse.setBookName(i.getBook().getName());
-                rentalResponse.setRentalDate(i.getRental().getRentalDate());
-                rentalResponse.setReturnDate(i.getRental().getReturnDate());
+                rentalResponse.setRentalDate(LocalDate.from(i.getRental().getRentalDate()));
+                if (i.getRental().getReturnDate() != null) {
+                    rentalResponse.setReturnDate(LocalDate.from(i.getRental().getReturnDate()));
+                }
 
                 rentalResponseList.add(rentalResponse);
             }
