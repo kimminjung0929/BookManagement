@@ -1,6 +1,6 @@
 <template>
   <Navbar />
-  <div class="container border border-dark my-2">
+  <div class="container border border-dark my-2 ">
     <router-view />
   </div>
 </template>
