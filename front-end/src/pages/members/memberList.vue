@@ -10,10 +10,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td class="text-center">alswnd</td>
-          <td class="text-center">김민중</td>
-          <td class="text-center" >01029091449</td>
+        <tr v-for="member in members" v-bind:key="member.id">
+          <td class="text-center">{{ member.id }}</td>
+          <td class="text-center">{{ member.name }}</td>
+          <td class="text-center" >{{ member.phone }}</td>
         </tr>
       </tbody>
     </table>
@@ -21,15 +21,27 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+import axios from '@/axiosBaseURL.js';
+
 export default {
-    setup() {
+  setup() {
+    const members = ref([]);
 
-        
-        return {
-
-        }
-
+    // 회원 가져오기
+    const getMembers = async () => {
+      const res = await axios.get('/member');
+      members.value = res.data;
     }
+    getMembers();
+
+      
+    return {
+      members,
+      getMembers
+    }
+
+  }
 }
 </script>
 

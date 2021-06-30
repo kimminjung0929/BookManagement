@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/rental")
+@RequestMapping(value = "/api/rental")
 public class RentalController {
 
     private final RentalService rentalService;
